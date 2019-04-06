@@ -1,8 +1,3 @@
-# Exercicio 3
-
-# string_formatada = '{:.<20}'.format('Geovani')
-# print(string_formatada)
-
 lista_de_usuarios = [
   {
     "nome": "qMHHOwoAaYECgB",
@@ -146,35 +141,27 @@ lista_de_usuarios = [
   }
 ]
 
-print('{:->127}'.format(''))
-print('|' + '{: <20}'.format('NOME') + '|' + '{: <6}'.format('IDADE')+ '|' + '{: <50}'.format('ENDERECO') +
-      '|' + '{: <5}'.format('SEXO') + '|' + '{: <40}'.format('E-MAIL') + '|'  )
-print('{:->127}'.format(''))
-
+list_email = []
+TEMPLATE  = ' {};{};{};{};{};'
+CABECALHO  = TEMPLATE.format('NOME', 'IDADE', 'ENDEREÇO', 'SEXO', 'EMAIL')
 
 for usuario in lista_de_usuarios:
-    print('|' + '{: <20}'.format(usuario['nome'])     + 
-          '|' + '{: <6}'.format(usuario['idade'])     + 
-          '|' + '{: <50}'.format(usuario['endereco']) +
-          '|' + '{: <5}'.format(usuario['sexo'])      + 
-          '|' + '{: <40}'.format(usuario['email']) + '|'  )
-    #print('{:->126}'.format(''))
+    
+    if 'j' in usuario['email'].lower() and usuario['idade'] > 25:
+        list_email.append(usuario)
 
-print('{:->127}'.format(''))
+    elif 'l' in usuario['email'].lower() and usuario['idade'] > 25:
+        list_email.append(usuario)
 
-##
-##  TEMPLATE  = ' {:>20} | {:>5} | {:>50} | {:>2} |{:>30}'
-##  CABECALHO  = TEMPLATE.format('NOME', 'IDADE', 'ENDEREÇO', 'SEXO', 'EMAIL')
-##
-##  print( CABECALHO )
-##  for usuario in lista_de_usuarios:
-##      usuario_formatado = TEMPLATE.format(
-#           usuario['nome'],
-#           usuario['idade'],
-#           usuario['endereco'],
-#           usuario['sexo'],
-#           usuario['email']
-#       )
-#       print(usuario_formatado)
-## 
-##
+#print( len(list_email))
+
+print(CABECALHO)
+for email in list_email:
+    email_formatado = TEMPLATE.format(
+        usuario['nome'],
+        usuario['idade'],
+        usuario['endereco'],
+        usuario['sexo'],
+        usuario['email']
+    )
+    print(email_formatado)
