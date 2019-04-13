@@ -26,7 +26,7 @@ def get_input_as_num( mensagem, erro ):
         return int( userinput)
     except ValueError:
         raise ValueError(erro)
-
+        
 def tratamento_de_tentativas(numeto_tentativas, mensagem, error):
     for tentativa in range(numeto_tentativas):
         try:
