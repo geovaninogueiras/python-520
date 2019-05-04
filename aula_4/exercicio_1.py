@@ -1,3 +1,8 @@
+##########################################################################################
+# Testes usando a metodologia TDD                                                        #
+# Cucumbers -> Olhar depois.                                                             #   
+##########################################################################################
+
 import datetime
 
 '''
@@ -12,6 +17,7 @@ import datetime
 ##########################################################################################
 # Constrantes                                                                            #   
 ##########################################################################################
+
 PRECO_DA_PASSAGEM = 4.00
 
 ##########################################################################################
@@ -65,16 +71,71 @@ class Catraca:
         
         return False
 
-##########################################################################################
-# Testes                                                                                 #
-##########################################################################################
+if __name__ == '__main__':
 
-##########################################################################################
-# Teste de Ticket vencido                                                                #
-##########################################################################################
-try:    
+    ##########################################################################################
+    # Testes                                                                                 #
+    ##########################################################################################
 
-    validade = datetime.datetime.now() - datetime.timedelta(days=2)
+    ##########################################################################################
+    # Teste de Ticket vencido                                                                #
+    ##########################################################################################
+    try:    
+
+        validade = datetime.datetime.now() - datetime.timedelta(days=2)
+        saldo = PRECO_DA_PASSAGEM + 1.00
+        concessionaria = 'sptrans'
+
+        ticket = Ticket(validade, saldo, concessionaria)
+
+        catraca = Catraca(concessionaria = 'sptrans')
+
+        catraca.liberar(ticket)
+
+    except ErroTicketExpirado:
+        print('Teste de ticket expirado ok')
+
+    ##########################################################################################
+    # Teste de Ticket com saldo insuficiente                                                 #
+    ##########################################################################################
+    try:    
+
+        validade = datetime.datetime.now() + datetime.timedelta(days=365)
+        saldo = PRECO_DA_PASSAGEM - 1.00
+        concessionaria = 'sptrans'
+
+        ticket = Ticket(validade, saldo, concessionaria)
+
+        catraca = Catraca(concessionaria = 'sptrans')
+
+        catraca.liberar(ticket)
+
+    except ErroSaldoInsuficiente:
+        print('Teste saldo insuficiente')
+
+    ##########################################################################################
+    # Teste Concessionaria diferente                                                         #
+    ##########################################################################################
+    try:    
+
+        validade = datetime.datetime.now() + datetime.timedelta(days=365)
+        saldo = PRECO_DA_PASSAGEM + 1.00
+        concessionaria = 'emtu'
+
+        ticket = Ticket(validade, saldo, concessionaria)
+
+        catraca = Catraca(concessionaria = 'sptrans')
+
+        catraca.liberar(ticket)
+
+    except ErroTicketConcessionaria:
+        print('Ticket inválido!')
+
+    ##########################################################################################
+    # Teste Catraca liberada                                                                 #
+    ##########################################################################################
+
+    validade = datetime.datetime.now() + datetime.timedelta(days=365)
     saldo = PRECO_DA_PASSAGEM + 1.00
     concessionaria = 'sptrans'
 
@@ -84,66 +145,13 @@ try:
 
     catraca.liberar(ticket)
 
-except ErroTicketExpirado:
-    print('Teste de ticket expirado ok')
+    try:
+        
+        assert ticket.saldo == ( saldo - PRECO_DA_PASSAGEM )
+        assert catraca.esta_liberada()
+        
+        print('testes de fluxo feliz OK')
 
-##########################################################################################
-# Teste de Ticket com saldo insuficiente                                                 #
-##########################################################################################
-try:    
-
-    validade = datetime.datetime.now() + datetime.timedelta(days=365)
-    saldo = PRECO_DA_PASSAGEM - 1.00
-    concessionaria = 'sptrans'
-
-    ticket = Ticket(validade, saldo, concessionaria)
-
-    catraca = Catraca(concessionaria = 'sptrans')
-
-    catraca.liberar(ticket)
-
-except ErroSaldoInsuficiente:
-    print('Teste saldo insuficiente')
-
-##########################################################################################
-# Teste Concessionaria diferente                                                         #
-##########################################################################################
-try:    
-
-    validade = datetime.datetime.now() + datetime.timedelta(days=365)
-    saldo = PRECO_DA_PASSAGEM + 1.00
-    concessionaria = 'emtu'
-
-    ticket = Ticket(validade, saldo, concessionaria)
-
-    catraca = Catraca(concessionaria = 'sptrans')
-
-    catraca.liberar(ticket)
-
-except ErroTicketConcessionaria:
-    print('Ticket inválido!')
-
-##########################################################################################
-# Teste Catraca liberada                                                                 #
-##########################################################################################
-
-
-validade = datetime.datetime.now() + datetime.timedelta(days=365)
-saldo = PRECO_DA_PASSAGEM + 1.00
-concessionaria = 'sptrans'
-
-ticket = Ticket(validade, saldo, concessionaria)
-
-catraca = Catraca(concessionaria = 'sptrans')
-
-catraca.liberar(ticket)
-
-try:
-    
-    assert ticket.saldo == (saldo - PRECO_DA_PASSAGEM)
-    assert catraca.esta_liberada()
-    
-    print('testes de fluxo feliz OK')
-
-except:
-    print('Bug Encontrado!!!')
+    except:
+        
+        print('Bug Encontrado!!!')
